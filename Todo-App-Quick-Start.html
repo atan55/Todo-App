@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <style>
+      body{
+        background-color: lightblue;
+      }
+
+      h1{
+        color: white;
+      }
+
+      div{
+        text-align: center;
+        color: green;
+        margin: 5px 5px 5px 5px;
+      }
+
+      #todos{
+        border-style: solid;
+        background-color: orange;
+        padding-left: 25px;
+        padding-right: 25px;
+        padding-bottom: 25px;
+        width: 100%;
+        border: 10px solid yellow;
+        color: black;
+      }
+
+      form{
+        /*top right bottom left*/
+        margin: 5px 5px 5px 5px;
+        position: fixed;
+        left: 10%;
+        right: 20%;
+      }
+
+      #sub{
+        /*top right bottom left*/
+        border-style: solid;
+        background-color: lightgreen;
+        width: 100%;
+        border: 10px solid green;
+        padding-left: 25px;
+        padding-right: 25px;
+      }
+
+      #subB{
+        /*top right bottom left*/
+        margin: 5px 5px 5px 5px;
+      }
+
+      #ch{
+
+      }
+
+      #b{
+        padding: 0px;
+      }
+
+      text{
+        /*top right bottom left*/
+        margin: 5px 5px 5px 0px;
+        position: absolute;
+        left: 0px;
+        height: 0px;
+        width: 80%;
+      }
+
+      input{
+
+      }
+
+      #r{
+        position: absolute;
+        right: 0px;
+        width: 65px;
+        height: 20px;
+      }
+
+      #ch{
+        /*top right bottom left*/
+        margin: 5px 20px 5px 50px;
+        position: absolute;
+        right: 50px;
+        width: 15%;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        class ToDoApp extends React.Component{
+          constructor(props){
+          super(props);
+          this.state = {value: "", items: ["Lernen für Bachelor-Arbeit"]};
+          this.handleSubmit = this.handleSubmit.bind(this);
+          this.handleChange = this.handleChange.bind(this);
+          this.removeItem = this.removeItem.bind(this);
+        }
+
+        handleDelete = itemId => {
+          const items = this.state.items.filter(item => item.id !== itemId);
+          this.setState({ items: items });
+        };
+
+        removeItem(e){
+          const newList = this.state.items.filter(item => item !== e.target.name);
+
+          this.setState(state => ({
+            items: newList
+          }));
+        }
+
+        handleSubmit(){
+          this.setState({items: [
+            ...this.state.items,
+            this.state.value
+          ], value: ""});
+          event.preventDefault();
+        }
+
+        handleChange(event){
+          const text = event.target.value;
+          this.setState({value: text});
+          event.preventDefault();
+        }
+
+        render(){
+           const items = this.state.items.map((val) => (
+            <div id="todos">
+               <label><text>{val}</text>
+               <div id="chR">
+               <input id="ch" type="checkbox" />
+               <input type="button" id="r" value="remove" name={val} onClick={this.removeItem}/>
+               </div>
+               </label>
+            </div>
+          ));
+
+          return(
+            <form onSubmit={this.handleSubmit}>
+              <h1>Meine Todo's</h1>
+              <hr/>
+              {items}
+              <div id="sub">
+              <input type="text" value={this.state.value} onChange={this.handleChange} />
+              <input type="submit" id="subB" value="addItem" />
+              </div>
+            </form>
+          );
+        }
+      }
+
+      ReactDOM.render(
+        <ToDoApp />,
+        document.getElementById('root')
+      )
+    </script>
+  </body>
+</html>
